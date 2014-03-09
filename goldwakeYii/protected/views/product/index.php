@@ -7,8 +7,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Product', 'url'=>array('create'), 'visible'=>!Yii::app()->user->isGuest),
-	array('label'=>'Manage Product', 'url'=>array('admin'), 'visible'=>!Yii::app()->user->isGuest),
+	array('label'=>'Create Product', 'url'=>array('create'), 'visible'=>!Yii::app()->user->isGuest && Yii::app()->user->roles == 1),
+	array('label'=>'Manage Product', 'url'=>array('admin'), 'visible'=>!Yii::app()->user->isGuest && Yii::app()->user->roles == 1),
 );
 ?>
 

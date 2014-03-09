@@ -27,21 +27,18 @@ class ProductController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
+            array('deny',
+                'actions'=>array('create', 'edit'),
+                'users'=>array('?'),
+            ),
+            array('allow',
+                'actions'=>array('delete'),
+                'roles'=>array('admin'),
+            ),
+            array('deny',
+                'actions'=>array('delete'),
+                'users'=>array('*'),
+            ),
 		);
 	}
 
@@ -142,6 +139,104 @@ class ProductController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    public function actionCart(){
+        $cart_line_items = array();
+        $session=new CHttpSession;
+        $session->open();
+        if (isset($session['cart'])){
+            $line_items = $session['cart'];
+            foreach ($line_items as $key => $value){
+                $cart_items = new CartLineItem();
+                array_push($cart_line_items,Product::model()->findByPk($key));
+            }
+            Yii::app()->user->setFlash('success', "Retrieved cart items");
+            $this->render('cart',array(
+                 'cart'=>$cart_line_items,
+            ));
+
+//            $dataProvider=new CActiveDataProvider('Product',$cart_line_items);
+//            $this->render('cart',array(
+//                'dataProvider'=>$dataProvider,
+//            ));
+
+        }else{
+            Yii::app()->user->setFlash('error', "No cart items.");
+            $this->redirect(Yii::app()->user->returnUrl);
+        }
+
+
+
+    }
+
+    public function actionAddToWishlist($id) {
+        $wishlist = Wishlist::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+        if (isset($wishlist)){
+            $wishlist_product = WishlistProduct::model()->findAllByAttributes(array('product_id'=>$id));
+            if (isset($wishlist_product)){
+                Yii::app()->user->setFlash('error', "Selected item is already present in wishlist.");
+                $this->redirect(Yii::app()->user->returnUrl);
+            }else{
+                $wishlist_product = new WishlistProduct();
+                $wishlist_product->product_id = $id;
+                $wishlist_product->wishlist_id = $wishlist->id;
+                Yii::app()->user->setFlash('success', "Item added to wishlist.");
+                $this->redirect(Yii::app()->user->returnUrl);
+            }
+        }else{
+            $wishlist = new Wishlist();
+            $wishlist->user_id = Yii::app()->user->id;
+            $wishlist->name = "My wishlist.";
+            $wishlist->save();
+            $wishlist_product = new WishlistProduct();
+            $wishlist_product->wishlist_id = $wishlist->id;
+            $wishlist_product->product_id = $id;
+            Yii::app()->user->setFlash('success', "Item added to new wishlist.");
+            $this->redirect(Yii::app()->user->returnUrl);
+        }
+    }
+
+    public function actionAddToCart($id){
+        $session=new CHttpSession;
+        $session->open();
+        if (isset($session['cart'])){
+            $line_items = $session['cart'];
+            if (array_key_exists($id,$line_items)){
+                $line_items[$id] = $line_items[$id] + 1;
+                Yii::app()->user->setFlash('success', "add one");
+            }else{
+                $line_items[$id] = 1;
+                Yii::app()->user->setFlash('success', "set one");
+            }
+//        if (isset(Yii::app()->session['cart'])){
+//            $line_items = Yii::app()->session['cart'];
+//            if (array_key_exists($id,$line_items)){
+//                $count = 0;
+//                $count = $line_items[$id];
+//                $line_items[$id] = $line_items[$id]++;
+//                Yii::app()->user->setFlash('notice', "add one");
+//            }else{
+//                $line_items[$id] = 1;
+//                Yii::app()->user->setFlash('notice', "set one");
+//            }
+//            Yii::app()->session['cart'] = $line_items;
+            //Yii::app()->user->setFlash('notice', "Cart is set");
+            $session['cart'] = $line_items;
+            $session->close();
+            $this->redirect(Yii::app()->user->returnUrl);
+        }else{
+            $session=new CHttpSession;
+            $session->open();
+            $cart = array();
+            $cart[$id] = 1;
+            $session['cart'] = $cart;
+
+//            Yii::app()->session['cart'] = array();
+            Yii::app()->user->setFlash('success', "Cart is not set");
+            $this->redirect(Yii::app()->user->returnUrl);
+        }
+        //$this->redirect(Yii::app()->user->returnUrl);
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

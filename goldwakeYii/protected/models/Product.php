@@ -62,6 +62,13 @@ class Product extends CActiveRecord
 		);
 	}
 
+    public function addToCart(){
+        //if ()
+        $line_item = new CartLineItem();
+        $line_item->product_id = $this->id;
+
+    }
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *

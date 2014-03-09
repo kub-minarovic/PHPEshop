@@ -12,7 +12,7 @@ class m140308_130306_users extends CDbMigration
             'name' => 'string NOT NULL',
             'surname' => 'string NOT NULL',
             'phone' => 'integer',
-            'admin' => 'boolean'
+            'roles' => 'integer'
         ));
         $this->insert('tbl_user',array(
             'email'=>'admin@admin.com',

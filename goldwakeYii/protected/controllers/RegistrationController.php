@@ -64,20 +64,22 @@ class RegistrationController extends Controller
         {
             $model->attributes=$_POST['RegisterForm'];
             $newUser->username = $model->username;
-            $newUser->password = $model->password;
+            $newUser->password = md5($model->password);
             $newUser->email = $model->email;
             $newUser->name = $model->name;
             $newUser->surname = $model->surname;
+            $newUser->roles = 0;
 
-            if($model->validate() && $newUser->save()) {
+            if($newUser->save()) {
                 $identity=new UserIdentity($newUser->username,$model->password);
                 $identity->authenticate();
                 Yii::app()->user->login($identity,0);
+                Yii::app()->user->setFlash('success',"Successfuly registrated.");
                 //redirect the user to page he/she came from
                 $this->redirect(Yii::app()->user->returnUrl);
             }
             else{
-                Yii::app()->user->setFlash('error', "Data3 ignored.");
+                Yii::app()->user->setFlash('error',"Please try again.");
                 $this->redirect(Yii::app()->homeUrl);
             }
 

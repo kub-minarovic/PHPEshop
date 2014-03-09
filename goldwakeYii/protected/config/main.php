@@ -35,8 +35,10 @@ return array(
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
+
 		),
-		// uncomment the following to enable URLs in path-format
+
+        		// uncomment the following to enable URLs in path-format
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
@@ -70,6 +72,7 @@ return array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
 				array(
+                    'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
 				),

@@ -26,12 +26,12 @@ class Wishlist extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('super_id', 'required'),
-			array('super_id', 'numerical', 'integerOnly'=>true),
+			array('user_id', 'required'),
+			array('user_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, super_id, name', 'safe', 'on'=>'search'),
+			array('id, user_id, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -44,6 +44,7 @@ class Wishlist extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
             'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
+            'products'=>array(self::HAS_MANY, 'WishlistProduct', 'wishlist_id')
 		);
 	}
 

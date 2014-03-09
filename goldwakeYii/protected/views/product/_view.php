@@ -21,5 +21,23 @@
 	<?php echo CHtml::encode($data->price); ?>
 	<br />
 
+    <?php echo CHtml::button('Add',
+    array(
+    'submit'=>array('product/AddToCart/'.$data->id),
+    'confirm' => 'Are you sure?'
+    // or you can use 'params'=>array('id'=>$id)
+    )
+    );
+    ?>
+
+    <?php echo CHtml::button('To Wishlist',
+        array(
+            'submit'=>array('product/AddToWishlist/'.$data->id),
+            'confirm' => 'Are you sure?'
+            // or you can use 'params'=>array('id'=>$id)
+        )
+    );
+    ?>
+
 
 </div>

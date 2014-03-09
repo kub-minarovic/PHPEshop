@@ -37,6 +37,48 @@ If you have business inquiries or other questions, please fill out the following
 
 	<?php echo $form->errorSummary($model); ?>
 
+
+    <table>
+        <tbody><tr>
+            <td></td>
+            <td colspan="2"><h3>Feedback:</h3></td>
+        </tr>
+        <tr>
+            <td>Full name:</td>
+            <td colspan="2"><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td colspan="2"><input type="email" name="email"></td>
+        </tr>
+        <tr>
+            <td>Inquiry type:</td>
+            <td colspan="2">
+                <select>
+                    <option>Order question</option>
+                    <option>General question</option>
+                    <option>Wake equipment</option>
+                    <option>Surf equipment</option>
+                    <option>Other</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Message:</td>
+            <td colspan="2">
+                <?php echo $form->labelEx($model,'body'); ?>
+                <?php echo $form->textArea($model,'body',array('rows'=>10, 'cols'=>50,'placeholder'=>'Type your message/question here.')); ?>
+                <?php echo $form->error($model,'body'); ?>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><?php echo CHtml::submitButton('Submit'); ?></td>
+            <td><input type="reset" name="reset" onclick="#todoJavascript" value="Reset Form"></td>
+        </tr>
+
+
+        </tbody></table>
 	<div class="row">
 		<?php echo $form->labelEx($model,'name'); ?>
 		<?php echo $form->textField($model,'name'); ?>
@@ -61,22 +103,10 @@ If you have business inquiries or other questions, please fill out the following
 		<?php echo $form->error($model,'body'); ?>
 	</div>
 
-	<?php if(CCaptcha::checkRequirements()): ?>
-	<div class="row">
-		<?php echo $form->labelEx($model,'verifyCode'); ?>
-		<div>
-		<?php $this->widget('CCaptcha'); ?>
-		<?php echo $form->textField($model,'verifyCode'); ?>
-		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
-		<br/>Letters are not case-sensitive.</div>
-		<?php echo $form->error($model,'verifyCode'); ?>
-	</div>
-	<?php endif; ?>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
-	</div>
+
+
+
 
 <?php $this->endWidget(); ?>
 

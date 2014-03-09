@@ -23,7 +23,34 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+		<div id="logo" style="width: 70%"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+        <div style="width: 29.9999%">
+<!--            --><?php //if (!Yii::app()->user->isGuest) echo CHtml::encode(Yii::app()->user->roles);  ?>
+            <span>
+<?php
+//echo isset(Yii::app()->session['cart']) ? print_r(Yii::app()->session['cart']) : "Prazdny";
+$quantity = 0;
+$sum_price = 0;
+$session=new CHttpSession;
+$session->open();
+if (isset($session['cart'])){
+    $line_items = $session['cart'];
+    foreach($line_items as $key => $line_item){
+        $product = Product::model()->findByPk($key);
+        if (isset($product)){
+
+            $quantity = $quantity + $line_item;
+            $sum_price = $sum_price + $quantity * $product->price;
+        }
+    }
+
+}
+echo "Produktov :".$quantity;
+echo "Celkom :".$sum_price;
+?>
+<?php echo CHtml::button('Kosik', array('submit' => array('product/cart'))); ?>
+
+        </span></div>
 	</div><!-- header -->
 
 	<div id="mainmenu">
@@ -56,7 +83,7 @@
 	<div class="clear"></div>
 
 	<div id="footer">
-        <? phpYii::app()->user->isAdmin ?>
+        <? phpYii::app()->user->isAdmin() ?>
 		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
 		All Rights Reserved.<br/>
 		<?php echo Yii::powered(); ?>

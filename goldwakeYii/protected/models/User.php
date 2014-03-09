@@ -11,6 +11,7 @@
  * @property string name
  * @property string surname
  * @property integer phone
+ * @property integer roles
  *
  */
 
@@ -51,7 +52,7 @@ class User extends CActiveRecord
 		// class name for the relations automatically generated below.
         return array(
             'orders'=>array(self::HAS_MANY, 'Order', 'user_id'),
-            'wishlists'=>array(self::HAS_MANY, 'Wishlist','user_id'),
+            'wishlist'=>array(self::HAS_ONE, 'Wishlist','user_id'),
         );
 	}
 
@@ -98,22 +99,6 @@ class User extends CActiveRecord
 		));
 	}
 
-    public function beforeSave() {
-
-        if(parent::beforeSave() && $this->isNewRecord) {
-
-            $this->password = md5($this->password);
-
-        }
-        return true;
-    }
-
-    public function isAdmin() {
-        if ($this->admin == true){
-            return true;
-        }else {return false;}
-    }
-
     public function validatePassword() {
 
            if (md5($this->password) == md5($this->password)){
@@ -122,6 +107,25 @@ class User extends CActiveRecord
                return false;
            }
 
+    }
+
+    public  function showCart() {
+        $quantity = 0;
+        $sum_price = 0;
+        $session=new CHttpSession;
+        $session->open();
+        if (isset($session['cart'])){
+            $line_items = $session['cart'];
+            foreach($line_items as $key => $line_item){
+                $product = Product::model()->findByPk($key);
+                if (isset($product)){
+                    $quantity += $line_item;
+                    $sum_price += $product->price;
+                }
+            }
+
+        }
+        return array($quantity,$sum_price);
     }
 
 	/**
