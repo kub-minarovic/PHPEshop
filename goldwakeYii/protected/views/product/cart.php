@@ -14,4 +14,19 @@ foreach ($cart as $line_item)
     echo '<div class="row">';
     echo $line_item->price;
     echo '</div>';
+    echo  CHtml::button('Remove from cart.',
+    array(
+        'submit'=>array('product/RemoveFromCart/'.$line_item->id),
+        'confirm' => 'Are you sure?'
+        // or you can use 'params'=>array('id'=>$id)
+    ));
+
+
 }
+
+echo CHtml::button('Continue with order.',
+    array(
+        'submit'=>array('order/create'),
+        'confirm' => 'Are you sure?'
+        // or you can use 'params'=>array('id'=>$id)
+    ));

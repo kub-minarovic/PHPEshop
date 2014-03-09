@@ -32,7 +32,7 @@ class WishlistController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','view'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -122,7 +122,11 @@ class WishlistController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Wishlist');
+		$dataProvider=new CActiveDataProvider('Wishlist',array(
+            'criteria'=>array(
+                'condition'=>'user_id='.Yii::app()->user->id
+            ),
+        ));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

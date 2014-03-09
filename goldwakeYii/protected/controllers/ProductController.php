@@ -144,13 +144,12 @@ class ProductController extends Controller
         $cart_line_items = array();
         $session=new CHttpSession;
         $session->open();
-        if (isset($session['cart'])){
+        if ($session['cart']){
             $line_items = $session['cart'];
             foreach ($line_items as $key => $value){
                 $cart_items = new CartLineItem();
                 array_push($cart_line_items,Product::model()->findByPk($key));
             }
-            Yii::app()->user->setFlash('success', "Retrieved cart items");
             $this->render('cart',array(
                  'cart'=>$cart_line_items,
             ));
@@ -162,7 +161,7 @@ class ProductController extends Controller
 
         }else{
             Yii::app()->user->setFlash('error', "No cart items.");
-            $this->redirect(Yii::app()->user->returnUrl);
+            $this->redirect(array('product/'));
         }
 
 
@@ -172,16 +171,18 @@ class ProductController extends Controller
     public function actionAddToWishlist($id) {
         $wishlist = Wishlist::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
         if (isset($wishlist)){
-            $wishlist_product = WishlistProduct::model()->findAllByAttributes(array('product_id'=>$id));
+            $wishlist_product = WishlistProduct::model()->findByAttributes(array('product_id'=>$id,'wishlist_id'=>$wishlist->id));
             if (isset($wishlist_product)){
                 Yii::app()->user->setFlash('error', "Selected item is already present in wishlist.");
-                $this->redirect(Yii::app()->user->returnUrl);
+                $dataProvider=new CActiveDataProvider('Product');
+                $this->redirect(array('product/'));
             }else{
                 $wishlist_product = new WishlistProduct();
                 $wishlist_product->product_id = $id;
                 $wishlist_product->wishlist_id = $wishlist->id;
+                $wishlist_product->save();
                 Yii::app()->user->setFlash('success', "Item added to wishlist.");
-                $this->redirect(Yii::app()->user->returnUrl);
+                $this->redirect(array('wishlist/'));
             }
         }else{
             $wishlist = new Wishlist();
@@ -192,7 +193,26 @@ class ProductController extends Controller
             $wishlist_product->wishlist_id = $wishlist->id;
             $wishlist_product->product_id = $id;
             Yii::app()->user->setFlash('success', "Item added to new wishlist.");
-            $this->redirect(Yii::app()->user->returnUrl);
+            $this->redirect(array('wishlist/'));
+        }
+    }
+
+    public function actionRemoveFromWishlist($id) {
+        $wishlist = Wishlist::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+        if (isset($wishlist)){
+            $wishlist_product = WishlistProduct::model()->findByAttributes(array('product_id'=>$id,'wishlist_id'=>$wishlist->id));
+            if (isset($wishlist_product)){
+                $wishlist_product->delete();
+                Yii::app()->user->setFlash('success', "Product removed from wishlist.");
+                $dataProvider=new CActiveDataProvider('Wishlist');
+                $this->redirect(array('wishlist/'));
+            }else{
+                Yii::app()->user->setFlash('error', "Wishlist item doesn't exist.");
+                $this->redirect(array('wishlist/'));
+            }
+        }else{
+            Yii::app()->user->setFlash('error', "Wishlist no found.");
+            $this->redirect(array('wishlist/'));
         }
     }
 
@@ -203,27 +223,14 @@ class ProductController extends Controller
             $line_items = $session['cart'];
             if (array_key_exists($id,$line_items)){
                 $line_items[$id] = $line_items[$id] + 1;
-                Yii::app()->user->setFlash('success', "add one");
+                Yii::app()->user->setFlash('success', "Product added.");
             }else{
                 $line_items[$id] = 1;
-                Yii::app()->user->setFlash('success', "set one");
+                Yii::app()->user->setFlash('success', "Product added.");
             }
-//        if (isset(Yii::app()->session['cart'])){
-//            $line_items = Yii::app()->session['cart'];
-//            if (array_key_exists($id,$line_items)){
-//                $count = 0;
-//                $count = $line_items[$id];
-//                $line_items[$id] = $line_items[$id]++;
-//                Yii::app()->user->setFlash('notice', "add one");
-//            }else{
-//                $line_items[$id] = 1;
-//                Yii::app()->user->setFlash('notice', "set one");
-//            }
-//            Yii::app()->session['cart'] = $line_items;
-            //Yii::app()->user->setFlash('notice', "Cart is set");
             $session['cart'] = $line_items;
             $session->close();
-            $this->redirect(Yii::app()->user->returnUrl);
+            $this->redirect(array('product/'));
         }else{
             $session=new CHttpSession;
             $session->open();
@@ -232,10 +239,38 @@ class ProductController extends Controller
             $session['cart'] = $cart;
 
 //            Yii::app()->session['cart'] = array();
-            Yii::app()->user->setFlash('success', "Cart is not set");
-            $this->redirect(Yii::app()->user->returnUrl);
+            Yii::app()->user->setFlash('success', "Product added.".print_r($session['cart']));
+            $this->redirect(array('product/'));
         }
         //$this->redirect(Yii::app()->user->returnUrl);
+    }
+
+    public function actionRemoveFromCart($id){
+        $session=new CHttpSession;
+        $session->open();
+        if (isset($session['cart'])){
+            $line_items = $session['cart'];
+            if (array_key_exists($id,$line_items)){
+                unset($line_items[$id]);
+                Yii::app()->user->setFlash('success', "Product removed from cart.");
+                $session['cart'] = $line_items;
+                $session->close();
+                if (isset($line_items)){
+                    $this->render('cart',array(
+                        'cart'=>$line_items,
+                    ));
+                }
+                $this->redirect(array('product/'));
+            }else{
+                Yii::app()->user->setFlash('error', "Product not found in cart.");
+                $this->render('cart',array(
+                    'cart'=>$line_items,
+                ));
+            }
+        }else{
+            Yii::app()->user->setFlash('error', "Cart not found.");
+            $this->redirect(array('product/'));
+        }
     }
 
 	/**

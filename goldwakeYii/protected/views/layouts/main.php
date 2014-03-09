@@ -25,7 +25,11 @@
 	<div id="header">
 		<div id="logo" style="width: 70%"><?php echo CHtml::encode(Yii::app()->name); ?></div>
         <div style="width: 29.9999%">
-<!--            --><?php //if (!Yii::app()->user->isGuest) echo CHtml::encode(Yii::app()->user->roles);  ?>
+<!--            --><?php
+            $session=new CHttpSession;
+            $session->open();
+            echo print_r($session['cart']);
+            echo $session['cart'] ? 'true' : 'false';//if (!Yii::app()->user->isGuest) echo CHtml::encode(Yii::app()->user->roles);  ?>
             <span>
 <?php
 //echo isset(Yii::app()->session['cart']) ? print_r(Yii::app()->session['cart']) : "Prazdny";
@@ -60,7 +64,8 @@ echo "Celkom :".$sum_price;
 				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>'Contact', 'url'=>array('/site/contact')),
                 array('label'=>'Products', 'url'=>array('/product/index')),
-                array('label'=>'Wishlists', 'url'=>array('/wishlist/index')),
+                array('label'=>'Wishlist', 'url'=>array('/wishlist/index')),
+                array('label'=>'Orders', 'url'=>array('/order/index'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Registration', 'url'=>array('/registration/index'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)

@@ -28,11 +28,11 @@ class OrderController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','create'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,16 +63,58 @@ class OrderController extends Controller
 	public function actionCreate()
 	{
 		$model=new Order;
-
+        $user = User::model()->findByPk(Yii::app()->user->id);
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Order']))
 		{
 			$model->attributes=$_POST['Order'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            if (!isset($user))
+                {$model->user_id = 0;}
+            else{$model->user_id = $user->id;}
+			if($model->save()){
+                if (!isset($user)){
+                    $user = new User;
+                    $user->username = $model->user_name;
+                    $user->name = $model->user_name;
+                    $user->surname = $model->user_surname;
+                    $user->email = $model->user_email;
+                    $user->phone = $model->user_phone;
+                    $user->password = md5("123456");
+                    $user->roles = 0;
+                    if (!$user->save()){
+                        Yii::app()->user->setFlash('error', "Error when creating user to order.");
+                    }
+                }
+                $session=new CHttpSession;
+                $session->open();
+                if (isset($session['cart'])){
+                    $line_items = $session['cart'];
+                    $order_product = new OrderProduct();
+
+                    foreach ($line_items as $key => $value){
+                        $order_product = new OrderProduct();
+                        $order_product->order_id = $model->id;
+                        $order_product->quantity = $value;
+                        $order_product->product_price = Product::model()->findByPk($key)->price;
+                        $order_product->product_id = Product::model()->findByPk($key)->id;
+                        $order_product->save();
+                    }
+                    $session['cart'] = null;
+                    $session->close();
+                }
+            }
+            Yii::app()->user->setFlash('success', "Order was successfuly created.");
+			$this->redirect(array('view','id'=>$model->id));
 		}
+
+        if (isset($user)){
+            $model->user_id = $user->id;
+            $model->user_email = $user->email;
+            $model->user_name = $user->name;
+            $model->user_surname = $user->surname;
+        }
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -122,7 +164,12 @@ class OrderController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Order');
+		$dataProvider=new CActiveDataProvider('Order',array(
+            'criteria'=>array(
+                'condition'=>'user_id='.Yii::app()->user->id,
+                /*'order'=>'create_time DESC'*/
+            ),
+        ));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

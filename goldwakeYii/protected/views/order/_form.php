@@ -20,12 +20,6 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'user_id'); ?>
-		<?php echo $form->textField($model,'user_id'); ?>
-		<?php echo $form->error($model,'user_id'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'user_name'); ?>
 		<?php echo $form->textField($model,'user_name',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'user_name'); ?>
@@ -59,12 +53,6 @@
 		<?php echo $form->labelEx($model,'shipping_address'); ?>
 		<?php echo $form->textField($model,'shipping_address',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'shipping_address'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'status'); ?>
-		<?php echo $form->textField($model,'status'); ?>
-		<?php echo $form->error($model,'status'); ?>
 	</div>
 
 	<div class="row buttons">

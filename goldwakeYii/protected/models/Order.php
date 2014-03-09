@@ -32,12 +32,12 @@ class Order extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, user_name, user_surname, user_email, user_phone, billing_address', 'required'),
+			array('user_name, user_surname, user_email, user_phone, billing_address', 'required'),
 			array('user_id, status', 'numerical', 'integerOnly'=>true),
 			array('user_name, user_surname, user_email, user_phone, billing_address, shipping_address', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, user_name, user_surname, user_email, user_phone, billing_address, shipping_address, status', 'safe', 'on'=>'search'),
+			array('user_name, user_surname, user_email, user_phone, billing_address, shipping_address, status', 'safe', 'on'=>'search'),
 		);
 	}
 

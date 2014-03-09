@@ -35,7 +35,7 @@ class User extends CActiveRecord
 		return array(
 			array('username, password, email, name, surname', 'required'),
 			array('username, password, email, name, surname', 'length', 'max'=>128),
-            array('username, password', 'length', 'min'=>7),
+            array('username, password', 'length', 'min'=>5),
             array('email','email'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -107,25 +107,6 @@ class User extends CActiveRecord
                return false;
            }
 
-    }
-
-    public  function showCart() {
-        $quantity = 0;
-        $sum_price = 0;
-        $session=new CHttpSession;
-        $session->open();
-        if (isset($session['cart'])){
-            $line_items = $session['cart'];
-            foreach($line_items as $key => $line_item){
-                $product = Product::model()->findByPk($key);
-                if (isset($product)){
-                    $quantity += $line_item;
-                    $sum_price += $product->price;
-                }
-            }
-
-        }
-        return array($quantity,$sum_price);
     }
 
 	/**
