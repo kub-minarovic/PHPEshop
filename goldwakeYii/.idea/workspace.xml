@@ -23,15 +23,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="OrderController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/controllers/OrderController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="32" selection-start="3422" selection-end="3422" vertical-scroll-proportion="-7.1923075" vertical-offset="1581" max-vertical-offset="3842">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ProductController.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/protected/controllers/ProductController.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -68,10 +59,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="main.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/protected/views/layouts/main.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="28" selection-start="1606" selection-end="1606" vertical-scroll-proportion="0.49774775" vertical-offset="357" max-vertical-offset="1802">
+            <state line="34" column="28" selection-start="1606" selection-end="1606" vertical-scroll-proportion="-8.5" vertical-offset="357" max-vertical-offset="1802">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/protected/config/main.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="10" selection-start="801" selection-end="801" vertical-scroll-proportion="0.7274775" vertical-offset="153" max-vertical-offset="1700">
               <folding />
             </state>
           </provider>
@@ -123,7 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/protected/models/Order.php" />
         <option value="$PROJECT_DIR$/protected/views/product/cart.php" />
         <option value="$PROJECT_DIR$/protected/views/order/create.php" />
         <option value="$PROJECT_DIR$/protected/views/order/_form.php" />
@@ -139,6 +138,7 @@
         <option value="$PROJECT_DIR$/protected/views/wishlist/view.php" />
         <option value="$PROJECT_DIR$/protected/views/product/view.php" />
         <option value="$PROJECT_DIR$/protected/controllers/ProductController.php" />
+        <option value="$PROJECT_DIR$/protected/config/main.php" />
       </list>
     </option>
   </component>
@@ -372,6 +372,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="goldwakeYii" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="goldwakeYii" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="protected" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="components" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -472,13 +490,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/protected/models/Wishlist.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="43" selection-start="2170" selection-end="2170" vertical-scroll-proportion="-7.1923075" vertical-offset="1173" max-vertical-offset="1785">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protected/controllers/WishlistController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="128" column="11" selection-start="3222" selection-end="3222" vertical-scroll-proportion="-69.96154" vertical-offset="357" max-vertical-offset="3111">
@@ -583,7 +594,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/views/layouts/main.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="28" selection-start="1606" selection-end="1606" vertical-scroll-proportion="0.49774775" vertical-offset="357" max-vertical-offset="1802">
+        <state line="34" column="28" selection-start="1606" selection-end="1606" vertical-scroll-proportion="-8.5" vertical-offset="357" max-vertical-offset="1802">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/config/main.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="10" selection-start="801" selection-end="801" vertical-scroll-proportion="0.7274775" vertical-offset="153" max-vertical-offset="1700">
           <folding />
         </state>
       </provider>
