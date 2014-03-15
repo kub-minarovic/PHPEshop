@@ -57,6 +57,7 @@ class Wishlist extends CActiveRecord
 			'id' => 'ID',
 			'super_id' => 'Super',
 			'name' => 'Name',
+			'user' => 'User'
 		);
 	}
 

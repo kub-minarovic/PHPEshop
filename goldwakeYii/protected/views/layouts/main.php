@@ -53,6 +53,7 @@
   </div><!-- header -->
   <div class="clear"></div>
 	
+	<div>
   <?php 
     if(isset($this->breadcrumbs)) {
 		  $this->widget('zii.widgets.CBreadcrumbs', array(
@@ -60,11 +61,7 @@
 	 	  ));
       echo "<!-- breadcrumbs -->";
     }  
-	  
-    foreach(Yii::app()->user->getFlashes() as $key => $message) {
-        echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
-    }
-  ?>
+	?>
   
   <div id="cart">
     <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/product/cart">
@@ -94,6 +91,14 @@
     ?>
     </div>
   </div><!-- cart -->
+  </div>
+	<div class="clear"></div>
+	
+  <?php
+    foreach(Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+    }
+  ?>
 	<div class="clear"></div>
 	
 	<div id="content-container">
