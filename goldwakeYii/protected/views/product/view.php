@@ -23,7 +23,10 @@ $this->menu=array(
 	'attributes'=>array(
 		'id',
 		'name',
-		'category_id',
+		array(
+      'name' => 'Category',
+      'value' => $model->category->name
+    ),  
 		'price',
 	),
 )); ?>

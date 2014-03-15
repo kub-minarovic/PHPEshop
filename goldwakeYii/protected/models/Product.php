@@ -8,9 +8,13 @@
  * @property string $name
  * @property integer $category_id
  * @property double $price
+ * @property image $image 
  */
 class Product extends CActiveRecord
 {
+
+  public $image;
+  
 	/**
 	 * @return string the associated database table name
 	 */
@@ -19,7 +23,7 @@ class Product extends CActiveRecord
 		return 'tbl_product';
 	}
 
-	/**
+  /**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
@@ -27,13 +31,14 @@ class Product extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, price', 'required'),
-			array('category_id', 'numerical', 'integerOnly'=>true),
+			array('name, price, category', 'required'),
+			array('name', 'length', 'max' => 255),
 			array('price', 'numerical'),
-			array('name', 'length', 'max'=>255),
+			array('category_id', 'numerical', 'integerOnly' => true),
+			array('image', 'file', 'types' => 'jpg, gif, png'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, category_id, price', 'safe', 'on'=>'search'),
+			array('name', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -57,8 +62,9 @@ class Product extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'category_id' => 'Category',
+			'category' => 'Category',
 			'price' => 'Price',
+			'image' => 'Image'
 		);
 	}
 

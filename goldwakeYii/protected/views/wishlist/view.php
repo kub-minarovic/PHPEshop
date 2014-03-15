@@ -26,16 +26,40 @@ $this->menu=array(
 	),
 )); ?>
 
+<br />
+<h2>Products in your wishlist</h2>
+
 <?php
   foreach ($model->products as $wishproduct){
+    echo '<div class="view">';
+    
     echo '<div class="row">';
-    echo 'Name :'.$wishproduct->product->name;
+    echo 'Name: '.$wishproduct->product->name;
     echo '</div>';
+    
     echo '<div class="row">';
-    echo 'Price :'.$wishproduct->product->price;
+    echo 'Price: '.$wishproduct->product->price;
     echo '</div>';
+    
     echo '<div class="row">';
-    echo 'Category :'.$wishproduct->product->category->name;
+    echo 'Category: '.$wishproduct->product->category->name;
+    echo '</div>';
+    
+    echo '<div class="row">';
+    echo CHtml::button('Add to cart',
+      array(
+        'submit'=>array('product/AddToCart/'.$wishproduct->product->id),
+        'confirm' => 'Are you sure you want to add '.$wishproduct->product->name.' to the cart?'
+      )
+    );
+    echo CHtml::button('Remove from wishlist',
+      array(
+        'submit' => array('product/RemoveFromWishlist/'.$wishproduct->product->id),
+        'confirm' => 'Are you sure you want to remove '.$wishproduct->product->name.' from your wishlist?'
+      )
+    );
+    echo '</div>';
+    
     echo '</div>';
   }
 ?>

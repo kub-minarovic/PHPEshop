@@ -36,7 +36,7 @@ class CategoryController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','migrate'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -142,6 +142,14 @@ class CategoryController extends Controller
 			'model'=>$model,
 		));
 	}
+
+  public function actionMigrate() 
+  {
+    require_once(Yii::app()->basePath."/migrations/m140308_130447_category.php");
+    $model = new m140308_130447_category;
+    $model->down();
+    $model->up();
+  }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

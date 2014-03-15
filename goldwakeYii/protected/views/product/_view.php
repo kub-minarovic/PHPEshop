@@ -13,13 +13,16 @@
 	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('category_id')); ?>:</b>
-	<?php echo CHtml::encode($data->category_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('category')); ?>:</b>
+	<?php echo CHtml::encode($data->category->name); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('price')); ?>:</b>
 	<?php echo CHtml::encode(sprintf("%.2f", $data->price)); ?> &euro;
 	<br />
+
+  <img src="<?= $this->getImageUrl($data->id) ?>" />
+  <br />
 
   <?php 
     echo CHtml::button('Add to cart',

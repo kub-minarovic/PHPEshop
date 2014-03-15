@@ -40,11 +40,12 @@
   				array('label'=>'Home', 'url'=>array('/site/index')),
   				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
   				array('label'=>'Contact', 'url'=>array('/site/contact')),
-                  array('label'=>'Products', 'url'=>array('/product/index')),
-                  array('label'=>'Wishlist', 'url'=>array('/wishlist/index')),
-                  array('label'=>'Orders', 'url'=>array('/order/index'), 'visible'=>!Yii::app()->user->isGuest),
+          array('label'=>'Products', 'url'=>array('/product/index')),
+          array('label'=>'Categories', 'url'=>array('/category/index')),
+          array('label'=>'Wishlist', 'url'=>array('/wishlist/index')),
+          array('label'=>'Orders', 'url'=>array('/order/index'), 'visible'=>!Yii::app()->user->isGuest),
   				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-                  array('label'=>'Registration', 'url'=>array('/registration/index'), 'visible'=>Yii::app()->user->isGuest),
+          array('label'=>'Registration', 'url'=>array('/registration/index'), 'visible'=>Yii::app()->user->isGuest),
   				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
   			),
   		)); ?>

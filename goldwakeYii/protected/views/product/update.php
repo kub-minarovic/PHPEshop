@@ -17,5 +17,6 @@ $this->menu=array(
 ?>
 
 <h1>Update Product <?php echo $model->id; ?></h1>
+<img src="<?= $this->getImageUrl($model->id) ?>" />
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

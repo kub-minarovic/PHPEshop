@@ -2,6 +2,22 @@
 
 class ProductController extends Controller
 {
+
+  public static function imagesPath() {
+    return Yii::app()->basePath."/../images/products/";
+  }
+  
+  public static function imagesUrl() {
+    return Yii::app()->baseUrl."/images/products/";
+  }
+
+  public function getImageUrl($id) {
+    $extensions = array(".png", ".jpg", ".gif");
+    foreach($extensions as $ext) {
+      if(file_exists(self::imagesPath().$id.$ext)) return self::imagesUrl().$id.$ext;
+    }
+  }
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -33,12 +49,13 @@ class ProductController extends Controller
             ),
             array('allow',
                 'actions'=>array('delete'),
-                'roles'=>array('admin'),
+                'users'=>array('admin'),
             ),
             array('deny',
                 'actions'=>array('delete'),
                 'users'=>array('*'),
             ),
+            
 		);
 	}
 
@@ -48,7 +65,7 @@ class ProductController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->render('view',array(
+	  $this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
 	}
@@ -59,16 +76,20 @@ class ProductController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Product;
+		$model = new Product;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Product']))
 		{
-			$model->attributes=$_POST['Product'];
-			if($model->save())
+			$model->attributes = $_POST['Product'];
+			$model->image = CUploadedFile::getInstance($model, 'image');
+      if($model->save()) {
+        $file = $model->id.".".$model->image->extensionName;
+        $model->image->saveAs(self::imagesPath().$file);
 				$this->redirect(array('view','id'=>$model->id));
+			}	
 		}
 
 		$this->render('create',array(
@@ -140,29 +161,37 @@ class ProductController extends Controller
 		));
 	}
 
-    public function actionCart(){
-        $cart_line_items = array();
-        $session=new CHttpSession;
-        $session->open();
-        if ($session['cart']){
-            $line_items = $session['cart'];
-            foreach ($line_items as $key => $value){
-                $cart_items = new CartLineItem();
-                array_push($cart_line_items,Product::model()->findByPk($key));
-            }
-            $this->render('cart',array(
-                 'cart'=>$cart_line_items,
-            ));
+  public function actionMigrate() 
+  {
+    require_once(Yii::app()->basePath."/migrations/m140308_130414_products.php");
+    $model = new m140308_130414_products;
+    $model->down();
+    $model->up();
+  }
+  
+  public function actionCart(){
+    $cart_line_items = array();
+    $session=new CHttpSession;
+    $session->open();
+    if ($session['cart']){
+        $line_items = $session['cart'];
+        foreach ($line_items as $key => $value){
+            $cart_items = new CartLineItem();
+            array_push($cart_line_items,Product::model()->findByPk($key));
+        }
+        $this->render('cart',array(
+             'cart'=>$cart_line_items,
+        ));
 
 //            $dataProvider=new CActiveDataProvider('Product',$cart_line_items);
 //            $this->render('cart',array(
 //                'dataProvider'=>$dataProvider,
 //            ));
 
-        }else{
-            Yii::app()->user->setFlash('error', "No cart items.");
-            $this->redirect(array('product/'));
-        }
+      }else{
+          Yii::app()->user->setFlash('error', "No cart items.");
+          $this->redirect(array('product/'));
+      }
 
 
 

@@ -13,6 +13,7 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
+	'htmlOptions' => array('enctype' => 'multipart/form-data')
 )); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
@@ -26,15 +27,27 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php echo $form->textField($model,'category_id'); ?>
-		<?php echo $form->error($model,'category_id'); ?>
+	<?php 
+    echo $form->labelEx($model, 'category'); 
+		
+		$data = CHtml::listData(Category::model()->findAll(), 'id', 'name');
+    $htmlOptions = array('size' => '1', 'prompt'=>'Select category');
+    echo $form->listBox($model,'category_id', $data, $htmlOptions);
+    //echo $form->textField($model,'category_id');
+		echo $form->error($model,'category_id');
+  ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'price'); ?>
 		<?php echo $form->textField($model,'price'); ?>
 		<?php echo $form->error($model,'price'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'image'); ?>
+		<?php echo $form->fileField($model,'image'); ?>
+		<?php echo $form->error($model,'image'); ?>
 	</div>
 
 	<div class="row buttons">
