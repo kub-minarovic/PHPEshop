@@ -14,7 +14,7 @@ $this->menu=array(
 
 <h1>Wishlists</h1>
 <?php if (Yii::app()->user->isGuest){
-    echo '<pre>Please login to visit your wishlist.</pre>';
+    echo 'Please login to visit your wishlist.<br />';
     echo CHtml::button('Login', array('submit' => array('site/login')));
     }
     else

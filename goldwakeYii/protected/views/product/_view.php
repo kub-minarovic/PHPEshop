@@ -18,26 +18,35 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('price')); ?>:</b>
-	<?php echo CHtml::encode($data->price); ?>
+	<?php echo CHtml::encode(sprintf("%.2f", $data->price)); ?> &euro;
 	<br />
 
-    <?php echo CHtml::button('Add',
-    array(
-    'submit'=>array('product/AddToCart/'.$data->id),
-    'confirm' => 'Are you sure?'
-    // or you can use 'params'=>array('id'=>$id)
-    )
+  <?php 
+    echo CHtml::button('Add to cart',
+      array(
+        'submit'=>array('product/AddToCart/'.$data->id),
+        'confirm' => 'Are you sure you want to add '.$data->name.' to the cart?'
+      )
     );
-    ?>
-
-    <?php echo CHtml::button('To Wishlist',
+  
+    if($this->isInWishlist($data->id)) {
+      echo CHtml::button('Remove from wishlist',
         array(
-            'submit'=>array('product/AddToWishlist/'.$data->id),
-            'confirm' => 'Are you sure?'
-            // or you can use 'params'=>array('id'=>$id)
+          'submit'=>array('product/RemoveFromWishlist/'.$data->id),
+          'confirm' => 'Are you sure you want to remove '.$data->name.' from your wishlist?'
         )
-    );
-    ?>
+      );
+    }
+    else {
+      echo CHtml::button('Add to wishlist',
+        array(
+          'submit'=>array('product/AddToWishlist/'.$data->id),
+          'confirm' => 'Are you sure you want to add '.$data->name.' to your wishlist?'
+        )
+      );
+    }
+      
+  ?>
 
 
 </div>

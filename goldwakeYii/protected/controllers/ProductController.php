@@ -168,6 +168,15 @@ class ProductController extends Controller
 
     }
 
+    public function isInWishlist($id) {
+      $wishlist = Wishlist::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+      if (!isset($wishlist)) {
+        return false;
+      }
+      $wishlist_product = WishlistProduct::model()->findByAttributes(array('product_id' => $id, 'wishlist_id' => $wishlist->id));
+      return isset($wishlist_product);
+    }
+
     public function actionAddToWishlist($id) {
         $wishlist = Wishlist::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
         if (isset($wishlist)){

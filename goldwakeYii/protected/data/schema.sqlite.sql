@@ -49,3 +49,22 @@ CREATE TABLE tbl_wishlist_product (
 );
 
 INSERT INTO tbl_user (username, password, email) VALUES ('admin', 'admin', 'admin@example.com');
+
+INSERT INTO tbl_category (id, super_id, name) VALUES (1, NULL, 'Shortboards');
+INSERT INTO tbl_category (id, super_id, name) VALUES (2, NULL, 'Longboards');
+INSERT INTO tbl_category (id, super_id, name) VALUES (3, NULL, 'Softboards');
+
+/* Category #1: Shortboards */
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (1, 1, 'Bic Surf DURA-TEC 6''7', 229.94);
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (2, 1, 'Bic Surf DURA-TEC 7''0 EGG', 239.95);
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (3, 1, 'Bic Surf DURA-TEC 5''10 Fish', 199.94);
+
+/* Category #2: Longboards */
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (4, 2, 'Bic Surf DURA-TEC 9''4 Super Magnum', 409.94);
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (5, 2, 'Bic Surf Bic 9''4 Nat Young', 478.99);
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (6, 2, 'Circle One 10'' Heritage Custom', 480.00);
+
+/* Category #2: Softboards */
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (7, 3, 'Bic Surf 5''6 G Board Kid Twin Fin', 249.00);
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (8, 3, 'Bic Surf 6''6 G Board Classic', 298.99);
+INSERT INTO tbl_product (id, category_id, name, price) VALUES (9, 3, 'Soft Surfboards 6''0 Beginner', 119.00);

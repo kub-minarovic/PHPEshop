@@ -23,76 +23,88 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo" style="width: 70%"><?php echo CHtml::encode(Yii::app()->name); ?></div>
-        <div style="width: 29.9999%">
-<!--            --><?php
-            $session=new CHttpSession;
-            $session->open();
-            echo print_r($session['cart']);
-            echo $session['cart'] ? 'true' : 'false';//if (!Yii::app()->user->isGuest) echo CHtml::encode(Yii::app()->user->roles);  ?>
-            <span>
-<?php
-//echo isset(Yii::app()->session['cart']) ? print_r(Yii::app()->session['cart']) : "Prazdny";
-$quantity = 0;
-$sum_price = 0;
-$session=new CHttpSession;
-$session->open();
-if (isset($session['cart'])){
-    $line_items = $session['cart'];
-    foreach($line_items as $key => $line_item){
-        $product = Product::model()->findByPk($key);
-        if (isset($product)){
-
-            $quantity = $quantity + $line_item;
-            $sum_price = $sum_price + $quantity * $product->price;
-        }
-    }
-
-}
-echo "Produktov :".$quantity;
-echo "Celkom :".$sum_price;
-?>
-<?php echo CHtml::button('Kosik', array('submit' => array('product/cart'))); ?>
-
-        </span></div>
-	</div><!-- header -->
-
-	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
-                array('label'=>'Products', 'url'=>array('/product/index')),
-                array('label'=>'Wishlist', 'url'=>array('/wishlist/index')),
-                array('label'=>'Orders', 'url'=>array('/order/index'), 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-                array('label'=>'Registration', 'url'=>array('/registration/index'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-			),
-		)); ?>
-	</div><!-- mainmenu -->
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
-    <?php
+	  <img src="<?php echo Yii::app()->request->baseUrl; ?>/css/header.jpg" width="950" />
+		
+		<div id="search">
+  		<form method="get">
+        <input type="text" placeholder="Search" name="search" value="<?php echo isset($_GET['search']) ? CHtml::encode($_GET['search']) : ''; ?>" />
+        <img src="<?php echo Yii::app()->request->baseUrl; ?>/css/search.png" class="icon" />
+      </form>
+    </div>
+		
+    <div id="logo"><a href="<?php echo Yii::app()->request->baseUrl; ?>"><span class="goldwake"><span class="gold">GOLD</span>WAKE</span> Surf Shop</a></div>
+		
+    <div id="mainmenu">
+  		<?php $this->widget('zii.widgets.CMenu',array(
+  			'items'=>array(
+  				array('label'=>'Home', 'url'=>array('/site/index')),
+  				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+  				array('label'=>'Contact', 'url'=>array('/site/contact')),
+                  array('label'=>'Products', 'url'=>array('/product/index')),
+                  array('label'=>'Wishlist', 'url'=>array('/wishlist/index')),
+                  array('label'=>'Orders', 'url'=>array('/order/index'), 'visible'=>!Yii::app()->user->isGuest),
+  				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+                  array('label'=>'Registration', 'url'=>array('/registration/index'), 'visible'=>Yii::app()->user->isGuest),
+  				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+  			),
+  		)); ?>
+  	</div><!-- mainmenu -->
+  </div><!-- header -->
+  <div class="clear"></div>
+	
+  <?php 
+    if(isset($this->breadcrumbs)) {
+		  $this->widget('zii.widgets.CBreadcrumbs', array(
+			  'links'=>$this->breadcrumbs,
+	 	  ));
+      echo "<!-- breadcrumbs -->";
+    }  
+	  
     foreach(Yii::app()->user->getFlashes() as $key => $message) {
         echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
     }
+  ?>
+  
+  <div id="cart">
+    <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/product/cart">
+      <img src="<?php echo Yii::app()->request->baseUrl; ?>/css/cart.png" class="icon" title="Display Cart" alt="Display Cart" />
+    </a>
+    <div class="text"> 
+  
+    <?php
+      $session=new CHttpSession;
+      $session->open();
+      if (!isset($session['cart']) || !@count($line_items = $session['cart'])) {
+        echo "Cart is empty"; 
+      }
+      else {
+        $quantity = 0;
+        $sum_price = 0;
+        foreach($line_items as $key => $line_item){
+          $product = Product::model()->findByPk($key);
+          if (isset($product)){
+            $quantity = $quantity + $line_item;
+            $sum_price = $sum_price + $quantity * $product->price;
+          }
+        }
+        echo $quantity." product".($quantity > 1 ? "s" : "").", ".sprintf("%.2f", $sum_price)." &euro;";
+        //echo CHtml::button('Display Cart', array('submit' => array('product/cart'))); 
+      }
     ?>
-
-	<?php echo $content; ?>
-
+    </div>
+  </div><!-- cart -->
+	<div class="clear"></div>
+	
+	<div id="content-container">
+	 <?php echo $content; ?>
+  </div><!-- content-container -->
 	<div class="clear"></div>
 
 	<div id="footer">
-        <? phpYii::app()->user->isAdmin() ?>
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
+    Copyright &copy; <?php echo date('Y'); ?> by GoldWake.<br />
+		All Rights Reserved.
 	</div><!-- footer -->
+	<div class="clear"></div>
 
 </div><!-- page -->
 

@@ -27,17 +27,15 @@ $this->menu=array(
 )); ?>
 
 <?php
-    foreach ($model->products as $wishproduct){
-        echo '<div class="row">';
-        echo 'Name :'.$wishproduct->product->name;
-        echo '</div>';
-        echo '<div class="row">';
-        echo 'Price :'.$wishproduct->product->price;
-        echo '</div>';
-        echo '<div class="row">';
-        echo 'Category :'.$wishproduct->product->category->name;
-        echo '</div>';
-
-
-}
+  foreach ($model->products as $wishproduct){
+    echo '<div class="row">';
+    echo 'Name :'.$wishproduct->product->name;
+    echo '</div>';
+    echo '<div class="row">';
+    echo 'Price :'.$wishproduct->product->price;
+    echo '</div>';
+    echo '<div class="row">';
+    echo 'Category :'.$wishproduct->product->category->name;
+    echo '</div>';
+  }
 ?>
